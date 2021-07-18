@@ -12,8 +12,8 @@ keyboard1.row('🔴 Окраснить', '⚪ Осветлить')
 keyboard1.row('🟦 Пиксели 🟦')
 paymentKeyboard.row('проверить оплату')
 PRICE = types.LabeledPrice(label='Фоточка', amount=10000)
-INP_PATH = 'data/images/inputs'
-RES_PATH = 'data/images/results'
+INP_PATH = '/app/data/images/inputs'
+RES_PATH = '/app/data/images/results'
 
 
 def remove_files(files: list):
@@ -31,7 +31,7 @@ def handle_docs_photo(message):
     bot.send_message(message.chat.id, 'акак', reply_markup=keyboard1)
     file_info = bot.get_file(message.photo[len(message.photo) - 1].file_id)
     downloaded_file = bot.download_file(file_info.file_path)
-    src = os.path.join(f'{INP_PATH}/{message.chat.id}.png')
+    src = f'{INP_PATH}/{message.chat.id}.png'
     with open(src, 'wb') as new_file:
         new_file.write(downloaded_file)
 
