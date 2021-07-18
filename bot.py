@@ -31,7 +31,7 @@ def handle_docs_photo(message):
     bot.send_message(message.chat.id, 'акак', reply_markup=keyboard1)
     file_info = bot.get_file(message.photo[len(message.photo) - 1].file_id)
     downloaded_file = bot.download_file(file_info.file_path)
-    src = f'{INP_PATH}/{message.chat.id}.png'
+    src = os.path.join(f'{INP_PATH}/{message.chat.id}.png')
     with open(src, 'wb') as new_file:
         new_file.write(downloaded_file)
 
