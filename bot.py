@@ -19,7 +19,7 @@ def handle_docs_photo(message):
     result = geniously_thing(downloaded_file)
 
     bot.send_photo(message.chat.id, result[0])
-    bot.send_message(message.chat.id, result[1])
+
 
 
 bot.polling()
