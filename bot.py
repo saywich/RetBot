@@ -1,7 +1,8 @@
 import telebot
+import os
 from retouch import geniously_thing
 
-bot = telebot.TeleBot("1313333867:AAGW0TdI6lw5p-tyo0M5KX0QI6TdSdahwWw")
+bot = telebot.TeleBot(os.environ.get("BOT_TOKEN"))
 
 
 @bot.message_handler(commands=['ooops'])
