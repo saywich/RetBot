@@ -1,3 +1,4 @@
+import cv2
 import cv2 as cv
 import numpy as np
 import json
@@ -40,7 +41,6 @@ def get_dmc_colors():
 
 
 def color_count(image):
-
     res = np.reshape(image, (image.size // 3, 3))
     return len(res), np.unique(res, axis=0)
 
@@ -58,10 +58,13 @@ def nearest_colour(subjects, color):
     return min(subjects, key=lambda subject: sum(abs((int(s) - int(q))) for s, q in zip(subject, color)))
 
 
-def geniously_thing(image_path: [str, bytes], save_path: [str, bytes]):
+def geniously_thing(image_path: [str, bytes]):
     dmc_list = get_dmc_colors()
     dmc_list_colors = [tuple(color.color) for color in dmc_list]
-    image = cv.imread(image_path)
+
+    nparr = np.fromstring(image_path, np.uint8)
+    image = cv.imdecode(nparr, cv.IMREAD_COLOR)
+
     scale = max(len(image), len(image[0])) // 75
     for x in range(0, len(image[0]), scale):
         for y in range(0, len(image), scale):
@@ -79,9 +82,8 @@ def geniously_thing(image_path: [str, bytes], save_path: [str, bytes]):
     print(f'Высота: {len(image) // scale} крестиков')
     print(f'Ширина: {len(image[0]) // scale} крестиков')
 
-    cv.imwrite(save_path, image)  # сохраняем результат :)
     colors = color_count(image)
-    # print(colors[0], list(colors[1][0]))
+
     dmc_info = [(color.color, color.code, color.name) for color in dmc_list]
     ret_str = ''
     for color in colors[1]:
@@ -89,4 +91,4 @@ def geniously_thing(image_path: [str, bytes], save_path: [str, bytes]):
             if list(color) == i[0]:
                 ret_str += f'RGB: {i[0]} Code: {i[1]} Name: {i[2]}\n'
 
-    return True, ret_str
+    return cv2.imencode('.jpg', image)[1], ret_str
